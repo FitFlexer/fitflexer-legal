@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy – FitFlexer</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #111827;
+      color: #E5E7EB;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem 4rem;
+    }
+
+    nav {
+      width: 100%;
+      max-width: 680px;
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #9CA3AF;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: #F97316; }
+
+    nav .separator { color: #374151; }
+
+    nav .current { color: #F3F4F6; font-size: 0.88rem; }
+
+    .logo-bar {
+      width: 100%;
+      max-width: 680px;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #F97316;
+      text-decoration: none;
+    }
+
+    .badge {
+      background: #F9731618;
+      border: 1px solid #F9731630;
+      color: #FB923C;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+    }
+
+    .card {
+      background: #1F2937;
+      border: 1px solid #374151;
+      border-radius: 16px;
+      padding: 2.5rem 2.5rem;
+      width: 100%;
+      max-width: 680px;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #F3F4F6;
+      margin-bottom: 0.5rem;
+    }
+
+    .meta {
+      font-size: 0.82rem;
+      color: #6B7280;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #374151;
+    }
+
+    .coming-soon-banner {
+      background: #F9731614;
+      border: 1px solid #F9731635;
+      border-left: 4px solid #F97316;
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .coming-soon-banner .icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+    }
+
+    .coming-soon-banner p {
+      font-size: 0.9rem;
+      color: #FED7AA;
+      line-height: 1.5;
+    }
+
+    .coming-soon-banner strong {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      color: #F97316;
+    }
+
+    .section {
+      margin-bottom: 2rem;
+    }
+
+    .section h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #F3F4F6;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section h2::before {
+      content: '';
+      display: inline-block;
+      width: 3px;
+      height: 1rem;
+      background: #F97316;
+      border-radius: 2px;
+    }
+
+    .section p {
+      font-size: 0.92rem;
+      color: #9CA3AF;
+      line-height: 1.7;
+    }
+
+    .placeholder-block {
+      background: #111827;
+      border: 1px dashed #374151;
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-size: 0.82rem;
+      color: #4B5563;
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    .topics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .topic-chip {
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 8px;
+      padding: 0.6rem 0.9rem;
+      font-size: 0.82rem;
+      color: #9CA3AF;
+    }
+
+    .topic-chip::before {
+      content: '• ';
+      color: #F97316;
+    }
+
+    footer {
+      margin-top: 2rem;
+      width: 100%;
+      max-width: 680px;
+      font-size: 0.82rem;
+      color: #4B5563;
+      text-align: center;
+    }
+
+    footer a { color: #6B7280; text-decoration: none; }
+    footer a:hover { color: #F97316; }
+
+    .nav-links {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: #9CA3AF;
+      text-decoration: none;
+      font-size: 0.85rem;
+      padding: 0.4rem 0.9rem;
+      border: 1px solid #374151;
+      border-radius: 999px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .nav-links a:hover {
+      border-color: #F97316;
+      color: #F97316;
+    }
+
+    @media (max-width: 520px) {
+      .card { padding: 1.5rem 1.25rem; }
+      h1 { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html">&#8592; Home</a>
+    <span class="separator">/</span>
+    <span class="current">Privacy Policy</span>
+  </nav>
+
+  <div class="logo-bar">
+    <a href="index.html" class="logo">FitFlexer</a>
+    <span class="badge">Legal</span>
+  </div>
+
+  <div class="card">
+    <h1>Privacy Policy</h1>
+    <div class="meta">Last updated: June 2026 &nbsp;·&nbsp; Version 1.0 (Draft)</div>
+
+    <div class="coming-soon-banner">
+      <div class="icon">🚧</div>
+      <p>
+        <strong>Full policy coming soon</strong>
+        This page is a placeholder. A complete, legally reviewed Privacy Policy will be published here before FitFlexer launches on the App Store. If you have questions in the meantime, please reach out at the contact below.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>Overview</h2>
+      <p>FitFlexer is committed to protecting your privacy. This policy will describe what personal information we collect when you use the FitFlexer app, how we use it, and the choices you have.</p>
+    </div>
+
+    <div class="section">
+      <h2>Topics This Policy Will Cover</h2>
+      <div class="topics-grid">
+        <div class="topic-chip">Information We Collect</div>
+        <div class="topic-chip">How We Use Your Data</div>
+        <div class="topic-chip">Health &amp; Fitness Data</div>
+        <div class="topic-chip">Social Features</div>
+        <div class="topic-chip">Data Sharing</div>
+        <div class="topic-chip">Data Retention</div>
+        <div class="topic-chip">Your Rights</div>
+        <div class="topic-chip">Cookies &amp; Tracking</div>
+        <div class="topic-chip">Third-Party Services</div>
+        <div class="topic-chip">Children's Privacy</div>
+        <div class="topic-chip">Security Practices</div>
+        <div class="topic-chip">Policy Updates</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Data We Anticipate Collecting</h2>
+      <div class="placeholder-block">
+        This section will detail the specific types of data collected, including account information (name, email, profile photo), workout and fitness data, social content (posts, comments, reactions), device identifiers, and usage analytics. Full detail to follow prior to launch.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Contact Us</h2>
+      <p>If you have any questions or concerns about this privacy policy, please contact us at <a href="mailto:legal@fitflexer.app" style="color:#F97316;text-decoration:none;">legal@fitflexer.app</a>.</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 FitFlexer. All rights reserved.</p>
+    <div class="nav-links">
+      <a href="index.html">&#8592; Home</a>
+      <a href="terms-of-service.html">Terms of Service &#8594;</a>
+    </div>
+  </footer>
+
+</body>
+</html>
