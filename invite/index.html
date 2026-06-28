@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitFlexer – Join via Invite</title>
+  <link rel="icon" href="../assets/favicon.svg">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #111827;
+      color: #E5E7EB;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .logo {
+      margin-bottom: 0.25rem;
+    }
+
+    .tagline {
+      font-size: 0.9rem;
+      color: #9CA3AF;
+      margin-bottom: 3rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .container {
+      background: #1F2937;
+      border: 1px solid #374151;
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      max-width: 420px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #F3F4F6;
+      margin-bottom: 0.75rem;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: #9CA3AF;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    .subtitle a {
+      color: #F97316;
+      text-decoration: none;
+    }
+
+    .subtitle a:hover {
+      text-decoration: underline;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .btn-primary {
+      background: #F97316;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      width: 100%;
+      text-decoration: none;
+    }
+
+    .btn-primary:hover {
+      background: #EA580C;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #9CA3AF;
+      border: 1px solid #374151;
+      width: 100%;
+    }
+
+    .btn-secondary:hover {
+      border-color: #F97316;
+      color: #F3F4F6;
+    }
+
+    .copied {
+      color: #10B981 !important;
+      border-color: #10B981 !important;
+    }
+
+    .token-display {
+      font-family: "SF Mono", SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.85rem;
+      color: #F97316;
+      background: #F9731610;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      margin-bottom: 1.5rem;
+      word-break: break-all;
+    }
+
+    .error {
+      color: #EF4444;
+    }
+
+    footer {
+      margin-top: 3rem;
+      font-size: 0.78rem;
+      color: #4B5563;
+      text-align: center;
+    }
+
+    footer a {
+      color: #6B7280;
+      text-decoration: none;
+    }
+
+    footer a:hover { color: #F97316; }
+  </style>
+</head>
+<body>
+  <div class="logo"><img src="../assets/logo.svg" alt="FitFlexer" height="32"></div>
+  <div class="tagline">Train Smart. Live Strong.</div>
+
+  <div class="container" id="content">
+    <h1>Opening FitFlexer...</h1>
+    <p class="subtitle">
+      If the app doesn't open automatically,
+      <a href="https://apps.apple.com/app/fitflexer/id_PLACEHOLDER" id="store-link">download it from the App Store</a>.
+    </p>
+    <div class="token-display" id="token-display"></div>
+    <a href="https://apps.apple.com/app/fitflexer/id_PLACEHOLDER" class="btn btn-primary" id="download-btn">Download FitFlexer</a>
+    <button class="btn btn-secondary" id="copy-btn" onclick="copyToken()">Copy invite code</button>
+  </div>
+
+  <div class="container" id="error-content" style="display: none;">
+    <h1 class="error">Invalid Invite Link</h1>
+    <p class="subtitle">This invite link appears to be invalid or incomplete. Ask your friend to send a new one.</p>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 FitFlexer Inc. All rights reserved.</p>
+    <p style="margin-top:0.35rem;">
+      <a href="../privacy-policy.html">Privacy</a> &middot;
+      <a href="../terms-of-service.html">Terms</a> &middot;
+      <a href="mailto:legal@fitflexer.app">Contact</a>
+    </p>
+  </footer>
+
+  <script>
+    // Extract token from URL path: /invite/TOKEN
+    const path = window.location.pathname;
+    const token = path.split('/invite/')[1];
+
+    if (token && token.length > 0) {
+      document.getElementById('token-display').textContent = token;
+
+      // Try to open the app via custom scheme
+      window.location.href = 'fitflexer://invite/' + token;
+
+      // If app doesn't open, redirect to App Store after 2s
+      setTimeout(function() {
+        window.location.href = 'https://apps.apple.com/app/fitflexer/id_PLACEHOLDER';
+      }, 2000);
+    } else {
+      // No token found — show error state
+      document.getElementById('content').style.display = 'none';
+      document.getElementById('error-content').style.display = 'block';
+    }
+
+    function copyToken() {
+      if (!token) return;
+      navigator.clipboard.writeText(token).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(function() {
+          btn.textContent = 'Copy invite code';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
