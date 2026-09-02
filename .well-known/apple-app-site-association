@@ -2,7 +2,7 @@
   "applinks": {
     "details": [
       {
-        "appIDs": ["TEAM_ID.com.fitflexer.app"],
+        "appIDs": ["4H7C7Q6529.Flex-Group.FitFlexer"],
         "components": [
           {
             "/": "/invite/*",
