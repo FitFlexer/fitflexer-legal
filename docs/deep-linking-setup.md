@@ -4,10 +4,12 @@
 
 1. **Add Associated Domains capability** to the Xcode project (`FitFlexer.xcodeproj`).
 2. Add the entitlement: `applinks:fitflexer.com`
-3. **Replace `TEAM_ID`** in `.well-known/apple-app-site-association` with your actual Apple Developer Team ID.
-   - Find it at: https://developer.apple.com/account → Membership Details → Team ID
-   - The `appIDs` value should be: `<TEAM_ID>.com.fitflexer.app`
+3. AASA `appIDs` is set to `4H7C7Q6529.Flex-Group.FitFlexer` (Team ID + the app's real bundle ID, `Flex-Group.FitFlexer`; the app is not `com.fitflexer.app`).
 4. **Replace the App Store URL placeholder** (`id_PLACEHOLDER`) in `invite/index.html` with the actual App Store listing URL once the app is published.
+
+## Current hosting note (2026-09-02)
+
+This site is served at `https://fitflexer.github.io/fitflexer-legal/` (the repo moved to the FitFlexer org; the old `kylemathew2003.github.io` URL 404s). `fitflexer.com` has **no DNS records** yet, so neither the invite fallback page nor the AASA file is reachable at the domain the backend mints (`https://fitflexer.com/invite/{token}`). The App Store provisioning profile also lacks the Associated Domains capability — enable it on the App ID and regenerate before adding the entitlement.
 
 ## Domain Configuration Required
 
@@ -39,6 +41,6 @@ GitHub Pages does **not** serve dotfiles/dot-directories by default. The `/.well
 - [ ] Add `INVITE_LINKS_TABLE` env var to game-service Lambda
 - [ ] Add `INVITE_BASE_URL` env var to game-service Lambda
 - [ ] Add API Gateway route for public invite preview endpoint (no JWT auth required)
-- [ ] Replace `TEAM_ID` in AASA file with actual Apple Developer Team ID
+- [x] Replace `TEAM_ID` in AASA file with actual Apple Developer Team ID (2026-09-02)
 - [ ] Replace `id_PLACEHOLDER` in invite fallback page with actual App Store URL
 - [ ] Configure domain to serve `.well-known/apple-app-site-association` over HTTPS
