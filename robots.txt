@@ -1,0 +1,7 @@
+# fitflexer.com is a public marketing and legal site — nothing here is gated.
+# Served explicitly so crawlers get a 200 rather than the 403 that S3-behind-OAC
+# returns for a missing key, which reads as an access-restricted site.
+User-agent: *
+Allow: /
+
+Sitemap: https://fitflexer.com/sitemap.xml

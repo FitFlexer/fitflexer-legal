@@ -42,6 +42,7 @@ jobs:
           set -euo pipefail
           missing=0
           for f in index.html privacy-policy.html terms-of-service.html eula.html \
+                   404.html robots.txt sitemap.xml favicon.ico \
                    assets/logo-mark.png assets/favicon-32.png \
                    assets/favicon-64.png assets/apple-touch-icon.png; do
             [ -f "$f" ] || { echo "::error::missing $f"; missing=1; }
@@ -54,7 +55,7 @@ jobs:
           python3 - <<'PY'
           import html.parser, os, re, sys
           bad = False
-          for page in ["index.html","privacy-policy.html","terms-of-service.html","eula.html"]:
+          for page in ["index.html","privacy-policy.html","terms-of-service.html","eula.html","404.html"]:
               src = open(page, encoding="utf-8").read()
               class P(html.parser.HTMLParser):
                   def __init__(s): super().__init__(); s.stack=[]; s.err=[]
@@ -150,9 +151,20 @@ jobs:
                       /invite/verify-token \
                       /assets/logo-mark.png /assets/favicon-32.png \
                       /assets/favicon-64.png /assets/apple-touch-icon.png \
+                      /robots.txt /sitemap.xml /favicon.ico \
                       /.well-known/apple-app-site-association; do
             code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://fitflexer.com${path}")
             echo "$code  https://fitflexer.com${path}"
             [ "$code" = "200" ] || fail=1
           done
+
+          # A missing path must be a real 404. S3 behind OAC returns 403
+          # AccessDenied for an absent key, and a crawler reads that as an
+          # access-restricted site — which is how Google reported this one as
+          # "behind a login page". CloudFront maps it; this proves the mapping.
+          miss=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 \
+                   "https://fitflexer.com/definitely-not-a-real-page")
+          echo "$miss  (missing path — expect 404, never 403)"
+          [ "$miss" = "404" ] || fail=1
+
           exit $fail
