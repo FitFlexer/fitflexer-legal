@@ -73,6 +73,30 @@ jobs:
           sys.exit(1 if bad else 0)
           PY
 
+      # Asset filenames are stable (favicon-32.png etc.), so changing an image
+      # leaves browsers holding a valid cached copy under an identical URL — a
+      # new logo simply does not appear until max-age lapses, and favicons are
+      # cached harder still. Appending a content hash makes the URL change
+      # whenever the bytes do, which is what actually busts the cache.
+      - name: Fingerprint asset URLs
+        run: |
+          python3 - <<'PY'
+          import hashlib, pathlib, re
+          digests = {
+              f.name: hashlib.md5(f.read_bytes()).hexdigest()[:8]
+              for f in pathlib.Path("assets").iterdir() if f.is_file()
+          }
+          for page in pathlib.Path(".").glob("*.html"):
+              src = page.read_text(encoding="utf-8")
+              def stamp(m):
+                  d = digests.get(m.group(1))
+                  return f"assets/{m.group(1)}?v={d}" if d else m.group(0)
+              out = re.sub(r"assets/([A-Za-z0-9._-]+)", stamp, src)
+              if out != src:
+                  page.write_text(out, encoding="utf-8")
+                  print(f"fingerprinted {page}")
+          PY
+
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
@@ -91,7 +115,16 @@ jobs:
             --exclude 'README.md' \
             --exclude '.well-known/*' \
             --exclude 'invite/*' \
-            --cache-control 'public, max-age=3600'
+            --cache-control 'public, max-age=31536000, immutable'
+
+          # HTML must never be immutable — it carries the fingerprints, so a
+          # stale page would keep pointing at the old asset URLs. Re-upload it
+          # with no-cache so browsers revalidate; the ETag keeps that cheap.
+          for f in *.html; do
+            aws s3 cp "$f" "s3://${BUCKET}/$f" \
+              --cache-control 'no-cache' \
+              --content-type 'text/html; charset=utf-8'
+          done
 
       - name: Invalidate CloudFront
         run: |
@@ -107,7 +140,16 @@ jobs:
         run: |
           set -euo pipefail
           fail=0
+          # /invite/<token> and the assets are included deliberately: the invite
+          # page is Terraform's but loads ITS logo and favicon from /assets/,
+          # which this repo owns. Renaming an asset here breaks that page
+          # silently — it did once, and this step was green throughout because
+          # it only checked the pages this repo publishes.
           for path in / /privacy-policy.html /terms-of-service.html /eula.html \
+                      /privacy-policy /terms-of-service /eula \
+                      /invite/verify-token \
+                      /assets/logo-mark.png /assets/favicon-32.png \
+                      /assets/favicon-64.png /assets/apple-touch-icon.png \
                       /.well-known/apple-app-site-association; do
             code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://fitflexer.com${path}")
             echo "$code  https://fitflexer.com${path}"
