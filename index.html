@@ -16,6 +16,19 @@
   <meta property="og:url" content="https://fitflexer.com/">
   <meta property="og:image" content="https://fitflexer.com/assets/logo-mark-512.png">
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "FitFlexer",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "iOS",
+    "url": "https://fitflexer.com/",
+    "description": "FitFlexer is a fitness app that turns showing up into a competition. Log your workouts, build a streak, and compete with friends on consistency.",
+    "publisher": { "@type": "Organization", "name": "FitFlexer", "url": "https://fitflexer.com/" }
+  }
+  </script>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -54,6 +67,7 @@
     }
 
     .wordmark {
+      margin: 0;
       font-size: 2rem;
       font-weight: 800;
       letter-spacing: -0.5px;
@@ -69,7 +83,7 @@
       margin-top: 0.4rem;
     }
 
-    h1 {
+    .headline {
       font-size: 1.85rem;
       font-weight: 700;
       color: var(--heading);
@@ -191,15 +205,16 @@
   <div class="wrap">
 
     <header>
-      <img src="assets/logo-mark.png" alt="" width="132">
-      <div class="wordmark">FitFlexer</div>
+      <img src="assets/logo-mark.png" alt="FitFlexer" width="132">
+      <h1 class="wordmark">FitFlexer</h1>
       <div class="tagline">Train Smart. Live Strong.</div>
 
-      <h1>Consistency, made competitive.</h1>
+      <p class="headline">Consistency, made competitive.</p>
       <p class="lede">
-        Most fitness apps track what you lifted. FitFlexer tracks whether you
-        turned up — and puts that on a leaderboard. Log your sessions, build a
-        streak, and settle it with your friends.
+        FitFlexer is a fitness app for iPhone. Most fitness apps track what you
+        lifted; FitFlexer tracks whether you turned up — and puts that on a
+        leaderboard. Log your sessions, build a streak, and settle it with your
+        friends.
       </p>
 
       <div class="status">📱 <strong>Coming soon</strong> to the App Store</div>
