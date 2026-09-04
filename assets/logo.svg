@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 40" width="180" height="40">
-  <g transform="translate(4, 2)">
-    <path d="M18 36C18 36 4 26 4 16C4 12 6 8 10 6C14 4 18 6 18 10C18 6 22 4 26 6C30 8 32 12 32 16C32 26 18 36 18 36Z" fill="#F97316"/>
-    <path d="M18 32C18 32 8 24 8 17C8 14 9.5 11 12 10C14.5 9 17 10 18 12.5C19 10 21.5 9 24 10C26.5 11 28 14 28 17C28 24 18 32 18 32Z" fill="#FB923C" opacity="0.7"/>
-    <path d="M18 28C18 28 12 22 12 18C12 16 13 14 15 13.5C17 13 18 14.5 18 16C18 14.5 19 13 21 13.5C23 14 24 16 24 18C24 22 18 28 18 28Z" fill="#FDBA74" opacity="0.5"/>
-  </g>
-  <text x="44" y="28" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="22" font-weight="800" fill="#F97316">FitFlexer</text>
-</svg>
