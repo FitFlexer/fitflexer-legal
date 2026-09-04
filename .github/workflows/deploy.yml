@@ -69,7 +69,18 @@ jobs:
                   print(f"::error::{page} has unbalanced tags: open={p.stack[:5]} mismatched={p.err[:5]}"); bad = True
               for ref in re.findall(r'(?:href|src)="([^"]+)"', src):
                   if ref.startswith(("http","mailto:","#","data:")): continue
-                  if not os.path.exists(ref.split("#")[0]):
+                  target = ref.split("#")[0].split("?")[0]
+                  if not target: continue
+                  # Resolve the way CloudFront serves it: root-relative paths are
+                  # bucket-relative, "/" is index.html, and an extensionless path
+                  # maps to .html via the viewer-request function. 404.html uses
+                  # root-relative links deliberately — it is served from arbitrary
+                  # paths, where relative links would resolve wrong.
+                  cand = target.lstrip("/") or "index.html"
+                  if cand.endswith("/"): cand += "index.html"
+                  if not os.path.exists(cand) and "." not in os.path.basename(cand):
+                      cand += ".html"
+                  if not os.path.exists(cand):
                       print(f"::error::{page} references missing file {ref}"); bad = True
           sys.exit(1 if bad else 0)
           PY
