@@ -164,7 +164,14 @@ jobs:
                       /assets/favicon-64.png /assets/apple-touch-icon.png \
                       /robots.txt /sitemap.xml /favicon.ico \
                       /.well-known/apple-app-site-association; do
-            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://fitflexer.com${path}")
+            # --retry rides out a transient TLS/connection blip, and the
+            # trailing "|| true" stops set -e aborting the whole check on
+            # curl's own exit code — the HTTP status below is the assertion.
+            # A flaky connection previously failed a deploy whose content was
+            # live and correct (curl exit 35, SSL connect error).
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 \
+                     --retry 3 --retry-delay 2 --retry-all-errors \
+                     "https://fitflexer.com${path}" || true)
             echo "$code  https://fitflexer.com${path}"
             [ "$code" = "200" ] || fail=1
           done
@@ -174,7 +181,8 @@ jobs:
           # access-restricted site — which is how Google reported this one as
           # "behind a login page". CloudFront maps it; this proves the mapping.
           miss=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 \
-                   "https://fitflexer.com/definitely-not-a-real-page")
+                   --retry 3 --retry-delay 2 --retry-all-errors \
+                   "https://fitflexer.com/definitely-not-a-real-page" || true)
           echo "$miss  (missing path — expect 404, never 403)"
           [ "$miss" = "404" ] || fail=1
 
