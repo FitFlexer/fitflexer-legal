@@ -1,0 +1,114 @@
+name: Deploy site
+
+# Publishes page content to s3://fitflexer-prod-website and invalidates
+# CloudFront. Infrastructure (bucket, CloudFront, DNS, cert, WAF) is owned by
+# FitFlexerInfra — this workflow only writes files.
+#
+# Terraform owns /.well-known/* and /invite/*, which are templated from infra
+# variables. The sync excludes them, and the deploy role is additionally DENIED
+# write access to those prefixes in IAM, so a mistake here cannot clobber them.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '*.html'
+      - 'assets/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-site
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write        # required to mint the OIDC token
+
+env:
+  AWS_REGION: us-east-2
+  BUCKET: fitflexer-prod-website
+  DISTRIBUTION_ID: E2AXTTWVPWPL7M
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Fail loudly rather than publishing a site with a missing page.
+      - name: Verify expected files exist
+        run: |
+          set -euo pipefail
+          missing=0
+          for f in index.html privacy-policy.html terms-of-service.html eula.html \
+                   assets/logo-mark.png assets/favicon.svg; do
+            [ -f "$f" ] || { echo "::error::missing $f"; missing=1; }
+          done
+          exit $missing
+
+      # Catches a truncated or half-written page before it reaches users.
+      - name: Check pages are well-formed and local links resolve
+        run: |
+          python3 - <<'PY'
+          import html.parser, os, re, sys
+          bad = False
+          for page in ["index.html","privacy-policy.html","terms-of-service.html","eula.html"]:
+              src = open(page, encoding="utf-8").read()
+              class P(html.parser.HTMLParser):
+                  def __init__(s): super().__init__(); s.stack=[]; s.err=[]
+                  def handle_starttag(s,t,a):
+                      if t not in ("meta","link","img","br","hr","input","source"): s.stack.append(t)
+                  def handle_endtag(s,t):
+                      if s.stack and s.stack[-1]==t: s.stack.pop()
+                      elif t in s.stack: s.err.append(t)
+              p = P(); p.feed(src)
+              if p.stack or p.err:
+                  print(f"::error::{page} has unbalanced tags: open={p.stack[:5]} mismatched={p.err[:5]}"); bad = True
+              for ref in re.findall(r'(?:href|src)="([^"]+)"', src):
+                  if ref.startswith(("http","mailto:","#","data:")): continue
+                  if not os.path.exists(ref.split("#")[0]):
+                      print(f"::error::{page} references missing file {ref}"); bad = True
+          sys.exit(1 if bad else 0)
+          PY
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # --delete keeps the bucket matching the repo, so a removed page actually
+      # disappears. The two excludes are what keep it from deleting the
+      # Terraform-managed files that are not in this repo's tree.
+      - name: Sync to S3
+        run: |
+          aws s3 sync . "s3://${BUCKET}/" \
+            --delete \
+            --exclude '.git/*' \
+            --exclude '.github/*' \
+            --exclude 'docs/*' \
+            --exclude '.well-known/*' \
+            --exclude 'invite/*' \
+            --cache-control 'public, max-age=3600'
+
+      - name: Invalidate CloudFront
+        run: |
+          id=$(aws cloudfront create-invalidation \
+                 --distribution-id "$DISTRIBUTION_ID" \
+                 --paths '/*' --query 'Invalidation.Id' --output text)
+          echo "invalidation $id"
+          aws cloudfront wait invalidation-completed \
+            --distribution-id "$DISTRIBUTION_ID" --id "$id"
+
+      # Proves the deploy actually served, rather than trusting a green sync.
+      - name: Verify live
+        run: |
+          set -euo pipefail
+          fail=0
+          for path in / /privacy-policy.html /terms-of-service.html /eula.html \
+                      /.well-known/apple-app-site-association; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://fitflexer.com${path}")
+            echo "$code  https://fitflexer.com${path}"
+            [ "$code" = "200" ] || fail=1
+          done
+          exit $fail
