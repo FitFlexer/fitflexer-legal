@@ -3,68 +3,142 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FitFlexer – Legal</title>
+  <title>FitFlexer – Consistency, made competitive</title>
+  <meta name="description" content="FitFlexer is a fitness app that turns showing up into a competition. Log your workouts, build a streak, and go head to head with friends to see who is actually consistent." />
   <link rel="icon" href="assets/favicon.svg">
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <meta name="theme-color" content="#111827">
+
+  <meta property="og:title" content="FitFlexer – Consistency, made competitive">
+  <meta property="og:description" content="Log your workouts, build a streak, and compete with friends to see who actually shows up.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://fitflexer.com/">
+  <meta property="og:image" content="https://fitflexer.com/assets/logo-mark-512.png">
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --bg: #111827;
+      --surface: #1F2937;
+      --border: #374151;
+      --text: #E5E7EB;
+      --heading: #F3F4F6;
+      --muted: #9CA3AF;
+      --dim: #6B7280;
+      --accent: #F97316;
+    }
+
     body {
-      background-color: #111827;
-      color: #E5E7EB;
+      background-color: var(--bg);
+      color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 2rem 1rem;
+      padding: 3rem 1.25rem 4rem;
     }
 
-    .logo {
+    .wrap { width: 100%; max-width: 720px; }
+
+    /* ── hero ─────────────────────────────────────────── */
+    header { text-align: center; margin-bottom: 4rem; }
+
+    header img {
+      width: 132px;
+      height: auto;
+      margin-bottom: 1.25rem;
+    }
+
+    .wordmark {
       font-size: 2rem;
       font-weight: 800;
       letter-spacing: -0.5px;
-      color: #F97316;
-      margin-bottom: 0.25rem;
+      color: var(--accent);
+      line-height: 1.1;
     }
 
     .tagline {
-      font-size: 0.9rem;
-      color: #9CA3AF;
-      margin-bottom: 3rem;
-      letter-spacing: 0.04em;
+      font-size: 0.78rem;
+      color: var(--dim);
+      letter-spacing: 0.12em;
       text-transform: uppercase;
+      margin-top: 0.4rem;
     }
 
     h1 {
-      font-size: 1.5rem;
+      font-size: 1.85rem;
       font-weight: 700;
-      color: #F3F4F6;
-      margin-bottom: 0.5rem;
-      text-align: center;
+      color: var(--heading);
+      margin-top: 2.5rem;
+      line-height: 1.25;
+      letter-spacing: -0.4px;
     }
 
-    p.subtitle {
-      font-size: 0.95rem;
-      color: #9CA3AF;
-      margin-bottom: 2.5rem;
-      text-align: center;
-      max-width: 400px;
+    .lede {
+      font-size: 1.02rem;
+      color: var(--muted);
+      margin: 1rem auto 0;
+      max-width: 30rem;
     }
 
-    .cards {
-      display: flex;
-      flex-direction: column;
+    .status {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.55rem 1.1rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .status strong { color: var(--accent); font-weight: 600; }
+
+    /* ── sections ─────────────────────────────────────── */
+    section { margin-bottom: 3.5rem; }
+
+    h2.section-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--dim);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 1rem;
-      width: 100%;
-      max-width: 420px;
     }
+
+    .feature {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.35rem;
+    }
+
+    .feature h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin-bottom: 0.35rem;
+    }
+
+    .feature p { font-size: 0.86rem; color: var(--dim); line-height: 1.55; }
+
+    /* ── legal cards ──────────────────────────────────── */
+    .cards { display: flex; flex-direction: column; gap: 0.85rem; }
 
     .card {
-      background: #1F2937;
-      border: 1px solid #374151;
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 1.5rem 1.75rem;
+      padding: 1.15rem 1.4rem;
       text-decoration: none;
       color: inherit;
       display: flex;
@@ -73,96 +147,136 @@
       transition: border-color 0.2s, background 0.2s;
     }
 
-    .card:hover {
-      border-color: #F97316;
-      background: #1F2937dd;
+    .card:hover, .card:focus-visible {
+      border-color: var(--accent);
+      background: #232F3F;
+      outline: none;
     }
 
     .card-icon {
-      width: 44px;
-      height: 44px;
-      background: #F9731620;
+      width: 42px; height: 42px;
+      background: rgba(249, 115, 22, 0.13);
       border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
     }
 
-    .card-text h2 {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #F3F4F6;
-      margin-bottom: 0.2rem;
-    }
+    .card-text h3 { font-size: 0.97rem; font-weight: 700; color: var(--heading); }
+    .card-text p  { font-size: 0.82rem; color: var(--dim); }
+    .arrow { margin-left: auto; color: var(--accent); font-size: 1.05rem; flex-shrink: 0; }
 
-    .card-text p {
-      font-size: 0.82rem;
-      color: #6B7280;
-    }
-
-    .arrow {
-      margin-left: auto;
-      color: #F97316;
-      font-size: 1.1rem;
-      flex-shrink: 0;
-    }
-
+    /* ── footer ───────────────────────────────────────── */
     footer {
-      margin-top: 3rem;
-      font-size: 0.78rem;
-      color: #4B5563;
+      border-top: 1px solid var(--border);
+      padding-top: 1.75rem;
+      font-size: 0.8rem;
+      color: var(--dim);
       text-align: center;
     }
 
-    footer a {
-      color: #6B7280;
-      text-decoration: none;
-    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+    footer .links { margin-bottom: 0.6rem; }
+    footer .links a { margin: 0 0.5rem; }
 
-    footer a:hover { color: #F97316; }
+    @media (max-width: 480px) {
+      body { padding-top: 2rem; }
+      h1 { font-size: 1.55rem; }
+      header img { width: 108px; }
+    }
   </style>
 </head>
 <body>
-  <div class="logo"><img src="assets/logo.svg" alt="FitFlexer" height="32"></div>
-  <div class="tagline">Train Smart. Live Strong.</div>
+  <div class="wrap">
 
-  <h1>Legal Documents</h1>
-  <p class="subtitle">Everything you need to know about how FitFlexer handles your data and the terms of using our app.</p>
+    <header>
+      <img src="assets/logo-mark.png" alt="" width="132">
+      <div class="wordmark">FitFlexer</div>
+      <div class="tagline">Train Smart. Live Strong.</div>
 
-  <div class="cards">
-    <a href="privacy-policy.html" class="card">
-      <div class="card-icon">🔒</div>
-      <div class="card-text">
-        <h2>Privacy Policy</h2>
-        <p>How we collect, use, and protect your data</p>
+      <h1>Consistency, made competitive.</h1>
+      <p class="lede">
+        Most fitness apps track what you lifted. FitFlexer tracks whether you
+        turned up — and puts that on a leaderboard. Log your sessions, build a
+        streak, and settle it with your friends.
+      </p>
+
+      <div class="status">📱 <strong>Coming soon</strong> to the App Store</div>
+    </header>
+
+    <section>
+      <h2 class="section-title">What you can do</h2>
+      <div class="features">
+        <div class="feature">
+          <h3>Log every session</h3>
+          <p>Build routines, track exercises, sets and reps, and keep your whole training history in one place.</p>
+        </div>
+        <div class="feature">
+          <h3>Build a streak</h3>
+          <p>Credit for showing up, not just for personal bests. Streaks reward the habit that actually moves the needle.</p>
+        </div>
+        <div class="feature">
+          <h3>Compete in leagues</h3>
+          <p>Ranked leagues with a skill rating that moves as you train. Climb against friends and the wider community.</p>
+        </div>
+        <div class="feature">
+          <h3>Run challenges</h3>
+          <p>Set a target, invite people, and settle it. Group challenges with their own chat and leaderboard.</p>
+        </div>
+        <div class="feature">
+          <h3>Find your people</h3>
+          <p>Join communities, follow friends, and share progress with people training toward the same thing.</p>
+        </div>
+        <div class="feature">
+          <h3>See the change</h3>
+          <p>Weight, body composition and progress photos over time, so the work is visible even on slow weeks.</p>
+        </div>
       </div>
-      <span class="arrow">›</span>
-    </a>
+    </section>
 
-    <a href="terms-of-service.html" class="card">
-      <div class="card-icon">📄</div>
-      <div class="card-text">
-        <h2>Terms of Service</h2>
-        <p>The rules and guidelines for using FitFlexer</p>
-      </div>
-      <span class="arrow">›</span>
-    </a>
+    <section>
+      <h2 class="section-title">Legal</h2>
+      <div class="cards">
+        <a href="privacy-policy.html" class="card">
+          <div class="card-icon">🔒</div>
+          <div class="card-text">
+            <h3>Privacy Policy</h3>
+            <p>What we collect, why, and how it is protected</p>
+          </div>
+          <div class="arrow" aria-hidden="true">→</div>
+        </a>
 
-    <a href="eula.html" class="card">
-      <div class="card-icon">📋</div>
-      <div class="card-text">
-        <h2>End User License Agreement</h2>
-        <p>License terms for using the FitFlexer app</p>
+        <a href="terms-of-service.html" class="card">
+          <div class="card-icon">📄</div>
+          <div class="card-text">
+            <h3>Terms of Service</h3>
+            <p>The rules for using FitFlexer</p>
+          </div>
+          <div class="arrow" aria-hidden="true">→</div>
+        </a>
+
+        <a href="eula.html" class="card">
+          <div class="card-icon">📱</div>
+          <div class="card-text">
+            <h3>End User Licence Agreement</h3>
+            <p>Your licence to use the app</p>
+          </div>
+          <div class="arrow" aria-hidden="true">→</div>
+        </a>
       </div>
-      <span class="arrow">›</span>
-    </a>
+    </section>
+
+    <footer>
+      <div class="links">
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="terms-of-service.html">Terms</a>
+        <a href="eula.html">EULA</a>
+        <a href="mailto:thefitflexer@gmail.com">Contact</a>
+      </div>
+      <div>&copy; 2026 FitFlexer. All rights reserved.</div>
+    </footer>
+
   </div>
-
-  <footer>
-    <p>&copy; 2026 FitFlexer Inc. All rights reserved.</p>
-    <p style="margin-top:0.35rem;">Contact: <a href="mailto:legal@fitflexer.app">legal@fitflexer.app</a></p>
-  </footer>
 </body>
 </html>
