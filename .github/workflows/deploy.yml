@@ -42,7 +42,8 @@ jobs:
           set -euo pipefail
           missing=0
           for f in index.html privacy-policy.html terms-of-service.html eula.html \
-                   assets/logo-mark.png assets/favicon.svg; do
+                   assets/logo-mark.png assets/favicon-32.png \
+                   assets/favicon-64.png assets/apple-touch-icon.png; do
             [ -f "$f" ] || { echo "::error::missing $f"; missing=1; }
           done
           exit $missing
