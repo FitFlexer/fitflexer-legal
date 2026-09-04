@@ -107,7 +107,16 @@ jobs:
         run: |
           set -euo pipefail
           fail=0
+          # /invite/<token> and the assets are included deliberately: the invite
+          # page is Terraform's but loads ITS logo and favicon from /assets/,
+          # which this repo owns. Renaming an asset here breaks that page
+          # silently — it did once, and this step was green throughout because
+          # it only checked the pages this repo publishes.
           for path in / /privacy-policy.html /terms-of-service.html /eula.html \
+                      /privacy-policy /terms-of-service /eula \
+                      /invite/verify-token \
+                      /assets/logo-mark.png /assets/favicon-32.png \
+                      /assets/favicon-64.png /assets/apple-touch-icon.png \
                       /.well-known/apple-app-site-association; do
             code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://fitflexer.com${path}")
             echo "$code  https://fitflexer.com${path}"
